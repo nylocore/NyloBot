@@ -23,7 +23,14 @@ const MAX_TRACKED_COOLDOWNS = 10000;
 export default {
     name: 'voiceStateUpdate',
     async execute(oldState, newState, client) {
-        if (newState.member.user.bot) return;
+        if (newState.member?.user.bot || oldState.member?.user.bot) {
+    if (newState.guild.id === process.env.GUILD_ID) {
+        updateVoiceCounter(newState.guild).catch(error => {
+            logger.error('Voice counter update error:', error);
+        });
+    }
+    return;
+}
 
         const guildId = newState.guild.id;
         const userId = newState.member.id;
