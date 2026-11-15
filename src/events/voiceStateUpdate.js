@@ -288,6 +288,12 @@ userLimit: userLimit === 0 ? undefined : userLimit,
         if (client.config?.features?.music) {
             handleMusicVoiceState(client, oldState, newState).catch((error) => {
                 logger.error('Music voice state handler error:', error);
+                // Update voice channel member counter
+        if (newState.guild.id === process.env.GUILD_ID) {
+    updateVoiceCounter(newState.guild).catch((error) => {
+        logger.error('Voice counter update error:', error);
+    });
+}
             });
         }
     }
